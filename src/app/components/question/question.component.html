@@ -1,0 +1,15 @@
+<mat-card class="example-card">
+<div class="content">
+<label id="example-radio-group-label" [innerText]="question.Question">Pick your favorite season</label>
+<mat-radio-group
+  aria-labelledby="example-radio-group-label"
+  class="example-radio-group">
+  <mat-radio-button [disabled]="!active" (change)="sendResponce(answers.indexOf(answer))" class="example-radio-button" *ngFor="let answer of answers" [value]="answer">
+    {{answer}}
+  </mat-radio-button>
+</mat-radio-group>
+<p [innerHTML]="correctResult"></p>
+</div>
+</mat-card>
+
+
