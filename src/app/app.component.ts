@@ -8,24 +8,30 @@ import arrayShuffle from 'array-shuffle';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent{
+export class AppComponent {
 
+  shuffle = (array: string[]) => {
+    return array.sort(() => Math.random() - 0.5);
+  };
 
-    constructor(private http: HttpClient){
-      this.http.get('assets/output.csv', {responseType: 'text'})
+  constructor(private http: HttpClient) {
+    this.http.get('assets/output.csv', { responseType: 'text' })
       .subscribe(
-          data => {
-              let csvToRowArray = data.split("\n");
-              var random= this.getRandomInt(csvToRowArray.length - 16);
-              for (let index = 1+random, count=1; index <= random+15; index++,count++) {
-                let row = csvToRowArray[index].split(";");
-                this.questions.push(new QuestionClass(count+". "+row[0], [row[1], row[2], row[3]], parseInt(row[4])));
-              }
-              console.log(this.questions);
-          },
-          error => {
-              console.log(error);
-          }
+        data => {
+          let csvToRowArray = data.split("\n");
+          csvToRowArray=this.shuffle(csvToRowArray);
+
+          let count = 0;
+          csvToRowArray.forEach(element => {
+            count++;
+            let row = element.split(";");
+            this.questions.push(new QuestionClass(count + ". " + row[0], [row[1], row[2], row[3], row[4]], parseInt(row[5])));
+            console.log(this.questions);
+          });
+        },
+        error => {
+          console.log(error);
+        }
       );
   }
 
@@ -40,9 +46,9 @@ export class AppComponent{
 
   QuestionsHTML: string = "";
 
-  questions: QuestionClass[]=[];
+  questions: QuestionClass[] = [];
 
-  allQuestions: QuestionClass[]=[];
+  allQuestions: QuestionClass[] = [];
 
 
 
